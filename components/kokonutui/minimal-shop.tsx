@@ -43,8 +43,8 @@ export default function MinimalShop() {
           <ProductModal
             product={selectedProduct}
             onClose={() => setSelectedProduct(null)}
-            onAddToCart={(product) => {
-              addToCart(product)
+            onAddToCart={(product, quantity) => {
+              addToCart(product, quantity)
               setSelectedProduct(null)
               setIsCartOpen(true)
             }}

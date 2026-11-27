@@ -8,7 +8,7 @@ import type { Product } from "./data"
 interface ProductModalProps {
   product: Product
   onClose: () => void
-  onAddToCart: (product: Product) => void
+  onAddToCart: (product: Product, quantity: number) => void
 }
 
 export function ProductModal({ product, onClose, onAddToCart }: ProductModalProps) {
@@ -55,8 +55,16 @@ export function ProductModal({ product, onClose, onAddToCart }: ProductModalProp
                 </div>
               </div>
             </div>
+            <div className="mt-3 flex items-center gap-3 text-sm" role="group" aria-label="Quantity">
+              <button type="button" aria-label="Decrease quantity" disabled={quantity === 1}
+                className="rounded border px-2 disabled:opacity-40"
+                onClick={() => setQuantity((value) => Math.max(1, value - 1))}>−</button>
+              <output aria-label="Selected quantity" aria-live="polite">{quantity}</output>
+              <button type="button" aria-label="Increase quantity" className="rounded border px-2"
+                onClick={() => setQuantity((value) => value + 1)}>+</button>
+            </div>
             <button
-              onClick={() => onAddToCart(product)}
+              onClick={() => onAddToCart(product, quantity)}
               className="w-full mt-3 py-2 bg-green-600 dark:bg-green-500 text-white text-xs font-medium rounded-md hover:bg-green-700 dark:hover:bg-green-400 transition-colors"
             >
               Add to Bag
