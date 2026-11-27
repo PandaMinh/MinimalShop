@@ -107,7 +107,7 @@ export function TopBar({ cartItemCount, onCartClick, onSearch }: TopBarProps) {
           <button
             type="button"
             onClick={onCartClick}
-            className="p-1.5 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-md relative text-zinc-700 dark:text-zinc-300"
+            className="p-1.5 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-md [position:relative] text-zinc-700 dark:text-zinc-300"
           >
             <ShoppingBag className="w-4 h-4" />
             {cartItemCount > 0 && (
