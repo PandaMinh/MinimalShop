@@ -46,7 +46,6 @@ export default function MinimalShop() {
             onAddToCart={(product) => {
               addToCart(product)
               setSelectedProduct(null)
-              setIsCartOpen(true)
             }}
           />
         )}
