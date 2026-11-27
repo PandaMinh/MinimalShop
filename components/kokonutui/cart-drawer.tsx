@@ -4,12 +4,13 @@ import { X } from "lucide-react"
 import type { CartItem } from "./data"
 
 interface CartDrawerProps {
+  notice?: string
   cart: CartItem[]
   onClose: () => void
   onRemoveFromCart: (productId: string) => void
 }
 
-export function CartDrawer({ cart, onClose, onRemoveFromCart }: CartDrawerProps) {
+export function CartDrawer({ cart, onClose, onRemoveFromCart, notice }: CartDrawerProps) {
   const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0)
 
   return (
@@ -42,6 +43,7 @@ export function CartDrawer({ cart, onClose, onRemoveFromCart }: CartDrawerProps)
               <span className="text-base font-medium">Total</span>
               <span className="text-xl font-bold text-zinc-900 dark:text-white">${total}</span>
             </div>
+            {notice && <p role="status" className="mb-2 text-sm text-zinc-600 dark:text-zinc-300">{notice}</p>}
             <button className="w-full py-3 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 text-base font-medium rounded-lg hover:bg-zinc-800 dark:hover:bg-zinc-100 transition-colors shadow-sm">
               Checkout Now
             </button>

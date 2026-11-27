@@ -9,6 +9,7 @@ import { TopBar } from "./top-bar"
 import { type Product, type CartItem, products } from "./data"
 
 export default function MinimalShop() {
+  const [limitReached, setLimitReached] = useState(false)
   const [cart, setCart] = useState<CartItem[]>([])
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
   const [isCartOpen, setIsCartOpen] = useState(false)
@@ -18,7 +19,7 @@ export default function MinimalShop() {
     setCart((prev) => {
       const exists = prev.find((item) => item.id === product.id)
       if (exists) {
-        return prev.map((item) => (item.id === product.id ? { ...item, quantity: item.quantity + quantity } : item))
+        return prev.map((item) => (item.id === product.id ? { ...item, quantity: Math.min(5, item.quantity + quantity) } : item))
       }
       return [...prev, { ...product, quantity }]
     })
@@ -44,6 +45,7 @@ export default function MinimalShop() {
             product={selectedProduct}
             onClose={() => setSelectedProduct(null)}
             onAddToCart={(product) => {
+              setLimitReached(cart.some((item) => item.id === product.id && item.quantity >= 5))
               addToCart(product)
               setSelectedProduct(null)
               setIsCartOpen(true)
@@ -54,7 +56,9 @@ export default function MinimalShop() {
 
       <AnimatePresence>
         {isCartOpen && (
-          <CartDrawer cart={cart} onClose={() => setIsCartOpen(false)} onRemoveFromCart={removeFromCart} />
+          <CartDrawer cart={cart} onClose={() => { setLimitReached(false); setIsCartOpen(false) }}
+            onRemoveFromCart={(id) => { setLimitReached(false); removeFromCart(id) }}
+            notice={limitReached ? "Maximum 5 units per product" : undefined} />
         )}
       </AnimatePresence>
     </div>
