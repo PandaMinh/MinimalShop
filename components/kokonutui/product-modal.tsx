@@ -52,6 +52,7 @@ export function ProductModal({ product, onClose, onAddToCart }: ProductModalProp
                 <div className="text-xs space-y-1">
                   <p className="text-zinc-500">SKU: {product.id}</p>
                   <p className="text-zinc-500">Stock: Available</p>
+                  <p className="text-zinc-500">Maximum 5 units per product</p>
                 </div>
               </div>
             </div>
