@@ -10,7 +10,8 @@ interface CartDrawerProps {
 }
 
 export function CartDrawer({ cart, onClose, onRemoveFromCart }: CartDrawerProps) {
-  const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0)
+  const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0)
+  const total = subtotal + (cart.length > 0 ? 10 : 0)
 
   return (
     <>
