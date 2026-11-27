@@ -1,7 +1,7 @@
 "use client"
 
 import { AnimatePresence } from "motion/react"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { ProductGrid } from "./product-grid"
 import { CartDrawer } from "./cart-drawer"
 import { ProductModal } from "./product-modal"
@@ -9,10 +9,18 @@ import { TopBar } from "./top-bar"
 import { type Product, type CartItem, products } from "./data"
 
 export default function MinimalShop() {
+  const [showProducts, setShowProducts] = useState(false)
   const [cart, setCart] = useState<CartItem[]>([])
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
   const [isCartOpen, setIsCartOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
+
+  const [catalogReady, setCatalogReady] = useState(false)
+  useEffect(() => {
+    if (!showProducts) return
+    const timer = window.setTimeout(() => setCatalogReady(true), 2000)
+    return () => window.clearTimeout(timer)
+  }, [showProducts])
 
   const addToCart = (product: Product, quantity = 1) => {
     setCart((prev) => {
@@ -32,10 +40,14 @@ export default function MinimalShop() {
 
   return (
     <div className="h-screen bg-zinc-50 dark:bg-zinc-950">
-      <TopBar cartItemCount={cart.length} onCartClick={() => setIsCartOpen(true)} onSearch={setSearchQuery} />
+      <TopBar onProductsClick={() => setShowProducts(true)} cartItemCount={cart.length} onCartClick={() => setIsCartOpen(true)} onSearch={setSearchQuery} />
 
       <div className="mx-auto px-2 pt-12 pb-16">
-        <ProductGrid products={filteredProducts} onProductSelect={setSelectedProduct} />
+        {showProducts && (catalogReady ? (
+          <ProductGrid products={filteredProducts} onProductSelect={setSelectedProduct} />
+        ) : (
+          <p role="status" className="py-8 text-center text-sm text-zinc-500">Loading products…</p>
+        ))}
       </div>
 
       <AnimatePresence>

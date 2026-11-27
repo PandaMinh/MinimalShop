@@ -8,6 +8,7 @@ import { motion } from "framer-motion"
 import Link from "next/link"
 
 interface TopBarProps {
+  onProductsClick: () => void
   cartItemCount: number
   onCartClick: () => void
   onSearch: (query: string) => void
@@ -15,7 +16,8 @@ interface TopBarProps {
 
 const categories = ["All", "Lighting", "Kitchenware", "Home Decor", "Plants", "Office", "Textiles"]
 
-export function TopBar({ cartItemCount, onCartClick, onSearch }: TopBarProps) {
+export function TopBar({ cartItemCount, onCartClick, onSearch, onProductsClick }: TopBarProps) {
+  const [menuOpen, setMenuOpen] = useState(false)
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const [selectedCategory, setSelectedCategory] = useState("All")
   const [isScrolled, setIsScrolled] = useState(false)
@@ -51,6 +53,18 @@ export function TopBar({ cartItemCount, onCartClick, onSearch }: TopBarProps) {
         >
           Shop Mini
         </Link>
+        <div className="relative ml-3">
+          <button type="button" aria-expanded={menuOpen} aria-controls="shop-navigation"
+            className="rounded-md px-2 py-1 text-sm hover:bg-zinc-100 dark:hover:bg-zinc-800"
+            onClick={() => setMenuOpen(!menuOpen)}>Menu</button>
+          {menuOpen && (
+            <nav id="shop-navigation" aria-label="Shop navigation"
+              className="absolute left-0 top-full rounded-md bg-white p-1 shadow dark:bg-zinc-900">
+              <button type="button" className="px-3 py-1.5 text-sm"
+                onClick={() => { onProductsClick(); setMenuOpen(false) }}>Products</button>
+            </nav>
+          )}
+        </div>
         <div className="flex-1 px-8 overflow-x-auto flex items-center justify-center gap-6 scrollbar-none">
           {categories.map((category) => (
             <button
