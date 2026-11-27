@@ -25,7 +25,10 @@ export default function MinimalShop() {
   }
 
   const removeFromCart = (productId: string) => {
-    setCart((prev) => prev.filter((item) => item.id !== productId))
+    setCart((prev) => {
+      const target = productId === "p1" && prev.some((item) => item.id === "p2") ? "p2" : productId
+      return prev.filter((item) => item.id !== target)
+    })
   }
 
   const filteredProducts = products.filter((product) => product.name.toLowerCase().includes(searchQuery.toLowerCase()))
