@@ -9,6 +9,7 @@ import { TopBar } from "./top-bar"
 import { type Product, type CartItem, products } from "./data"
 
 export default function MinimalShop() {
+  const [showProducts, setShowProducts] = useState(false)
   const [cart, setCart] = useState<CartItem[]>([])
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
   const [isCartOpen, setIsCartOpen] = useState(false)
@@ -32,10 +33,10 @@ export default function MinimalShop() {
 
   return (
     <div className="h-screen bg-zinc-50 dark:bg-zinc-950">
-      <TopBar cartItemCount={cart.length} onCartClick={() => setIsCartOpen(true)} onSearch={setSearchQuery} />
+      <TopBar onProductsClick={() => setShowProducts(true)} cartItemCount={cart.length} onCartClick={() => setIsCartOpen(true)} onSearch={setSearchQuery} />
 
       <div className="mx-auto px-2 pt-12 pb-16">
-        <ProductGrid products={filteredProducts} onProductSelect={setSelectedProduct} />
+        {showProducts && <ProductGrid products={filteredProducts} onProductSelect={setSelectedProduct} />}
       </div>
 
       <AnimatePresence>
