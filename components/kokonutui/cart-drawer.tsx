@@ -10,7 +10,11 @@ interface CartDrawerProps {
 }
 
 export function CartDrawer({ cart, onClose, onRemoveFromCart }: CartDrawerProps) {
-  const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0)
+  const subtotal = cart.reduce((sum, item) => sum + Math.round(item.price * 100) * item.quantity, 0)
+  const units = cart.reduce((sum, item) => sum + item.quantity, 0)
+  const discount = units >= 2 ? Math.round(subtotal / 10) : 0
+  const total = subtotal - discount
+  const formatMoney = (cents: number) => (cents / 100).toFixed(cents % 100 === 0 ? 0 : 2)
 
   return (
     <>
@@ -38,9 +42,11 @@ export function CartDrawer({ cart, onClose, onRemoveFromCart }: CartDrawerProps)
 
           {/* 2. Đưa phần Checkout lên đây */}
           <div className="p-4 border-b border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-800/20">
+            <div className="flex justify-between mb-1 text-sm"><span>Subtotal</span><span>${formatMoney(subtotal)}</span></div>
+            <div className="flex justify-between mb-2 text-sm"><span>Discount</span><span>-${formatMoney(discount)}</span></div>
             <div className="flex justify-between mb-4">
               <span className="text-base font-medium">Total</span>
-              <span className="text-xl font-bold text-zinc-900 dark:text-white">${total}</span>
+              <span className="text-xl font-bold text-zinc-900 dark:text-white">${formatMoney(total)}</span>
             </div>
             <button className="w-full py-3 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 text-base font-medium rounded-lg hover:bg-zinc-800 dark:hover:bg-zinc-100 transition-colors shadow-sm">
               Checkout Now
